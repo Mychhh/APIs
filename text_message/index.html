@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- JS -->
+    <script src="create-message.js" defer></script>
+    <title>Text Message</title>
+</head>
+<body>
+    
+    <div class="background">
+        <div class="form">
+            <div class="form_header">
+                <h1>Send a text message</h1>
+            </div>
+
+            <div class="row">
+                <!-- <label for="from">From:</label> -->
+                <input name="from" id="from" type="hidden" value="+14344742979">
+            </div>
+            <div class="row">
+                <label for="to">To:</label>
+                <input name="to" id="to" type="text">
+            </div>
+            <div class="row textarea">
+                <label for="message">Your message:</label>
+                <textarea name="message" id="message"></textarea>
+                <!-- cols="30" rows="10" -->
+            </div>
+            <div class="row">
+                <input type="submit" name="submit" id="submit"  value="Send" onclick="validateMessage()">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

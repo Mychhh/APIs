@@ -1,19 +1,23 @@
-// object
+// weather object
 let weather = {
-    apiKey : '8fbae8d3911a9dac6f7c9b5653f4833d',
-    fetchWeather : (city) => {
+    apiKey: '8fbae8d3911a9dac6f7c9b5653f4833d',
+    fetchWeather: (city) => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weather.apiKey}`)
-        .then(response => {
-            return response.json()
-        })
-        .then(data => {
-            weather.displayWeather(data)
-        })
-        .catch(error => {
-            console.error(error)
-        })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                weather.displayWeather(data)
+            })
+            .catch(error => {
+                document.querySelector('.loading_message').classList.remove('no_location')
+                document.querySelector('.invalid_message').classList.add('no_location')
+                document.querySelector('.weather').classList.add('loading')
+                document.querySelector('.blurred').classList.remove('active')
+                console.error(error)
+            })
     },
-    displayWeather : (data) => {
+    displayWeather: (data) => {
         ////same as the code below, those are just shorter and cleaner
         // const name  = data.name
         // const icon = data.weather[0].icon
@@ -25,7 +29,7 @@ let weather = {
 
         const { name } = data
         const { icon, description } = data.weather[0]
-        const { temp, humidity} = data.main 
+        const { temp, humidity } = data.main
         const { speed } = data.wind
         // console.log(name, icon, description, temp, humidity, speed)
 
@@ -36,22 +40,72 @@ let weather = {
         document.querySelector('.humidity').innerText = `Humidity: ${humidity}%`
         document.querySelector('.wind').innerText = `Wind speed: ${speed} km/h`
         document.querySelector('.weather').classList.remove('loading')
-        document.body.style.backgroundImage = 'url(https://source.unsplash.com/1600x900/?'+ name +')'
+
+        document.querySelector('.loading_message').classList.remove('no_location')
+        document.querySelector('.invalid_message').classList.remove('no_location')
+        document.querySelector('.blurred').classList.remove('active')
+
+        weatherBackground(temp)
     },
-    search : () => {
-        weather.fetchWeather(document.querySelector('.search-bar').value)
+    search: () => {
+
+        if (document.querySelector('.search-bar').value === '') {
+            document.querySelector('.invalid_message').classList.remove('no_location')
+            document.querySelector('.weather').classList.add('loading')
+            document.querySelector('.loading_message').classList.add('no_location')
+            document.querySelector('.blurred').classList.remove('active')
+        } else {
+            weather.fetchWeather(document.querySelector('.search-bar').value)
+        }
+
     }
 }
 
-document.querySelector('.search button').addEventListener('click', function(){
+document.querySelector('.search button').addEventListener('click', function () {
+    document.querySelector('.blurred').classList.add('active')
     weather.search()
 })
 
-document.querySelector('.search-bar').addEventListener('keypress', function(event){
-    if(event.key === "Enter"){
-        console.log('I am here')
+document.querySelector('.search-bar').addEventListener('keypress', function (event) {
+    if (event.key === "Enter") {
+        document.querySelector('.blurred').classList.add('active')
         weather.search()
     }
 })
+
+const weatherBackground = (temperature) => {
+
+    let backGroundImage = ''
+
+    if (temperature < 0) {
+        backGroundImage = 'url(./Images/0.jfif)'
+    }
+    else if (temperature < 5) {
+        backGroundImage = 'url(./Images/1.jfif)'
+    }
+    else if (temperature < 10) {
+        backGroundImage = 'url(./Images/2.jfif)'
+    }
+    else if (temperature < 15) {
+        backGroundImage = 'url(./Images/3.jfif)'
+    }
+    else if (temperature < 20) {
+        backGroundImage = 'url(./Images/4.jfif)'
+    }
+    else if (temperature < 25) {
+        backGroundImage = 'url(./Images/5.jfif)'
+    }
+    else if (temperature < 30) {
+        backGroundImage = 'url(./Images/6.jfif)'
+    }
+    else if (temperature < 35) {
+        backGroundImage = 'url(./Images/7.jfif)'
+    }
+    else if (temperature > 35) {
+        backGroundImage = 'url(./Images/8.jfif)'
+    }
+
+    document.body.style.backgroundImage = backGroundImage
+}
 
 weather.fetchWeather('Bulacan')

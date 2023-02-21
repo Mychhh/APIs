@@ -6,6 +6,17 @@
     box-sizing: border-box;
 }
 
+.blurred.active{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(128, 128, 128, 0.068);
+    backdrop-filter: blur(5px);
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
 body {
     display: flex;
     flex-flow: column nowrap;
@@ -15,6 +26,9 @@ body {
     font-family: 'Open Sans', sans-serif;
     background: #222;
     background-image: url('https://source.unsplash.com/1600x900/?landscape');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     font-size: 1.2rem;
 }
 
@@ -79,16 +93,24 @@ h1.temp {
     text-transform: capitalize;
 }
 
-/* hides the info at start */
 .weather.loading{
-    /* display: none; */
-    visibility: hidden;
+    display: none;
 }
 
-.weather.loading::after{
-    /* display: block; */
-    visibility: visible;
-    content: 'Loading...';
-    color: white;
-    max-height: 20px;
+/* Error messages */
+.loading_message.no_location{
+    margin-top: 1rem;
+    display: block;
+}
+.loading_message{
+    display: none;
+}
+
+.invalid_message{
+    margin-top: 1rem;
+    display: none;
+}
+.invalid_message.no_location{
+    margin-top: 1rem;
+    display: block;
 }

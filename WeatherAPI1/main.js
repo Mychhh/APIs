@@ -78,31 +78,31 @@ const weatherBackground = (temperature) => {
     let backGroundImage = ''
 
     if (temperature < 0) {
-        backGroundImage = 'url(/Images/0.jfif)'
+        backGroundImage = 'url(images/0.jfif)'
     }
     else if (temperature < 5) {
-        backGroundImage = 'url(/Images/1.jfif)'
+        backGroundImage = 'url(images/1.jfif)'
     }
     else if (temperature < 10) {
-        backGroundImage = 'url(/Images/2.jfif)'
+        backGroundImage = 'url(images/2.jfif)'
     }
     else if (temperature < 15) {
-        backGroundImage = 'url(/Images/3.jfif)'
+        backGroundImage = 'url(images/3.jfif)'
     }
     else if (temperature < 20) {
-        backGroundImage = 'url(/Images/4.jfif)'
+        backGroundImage = 'url(images/4.jfif)'
     }
     else if (temperature < 25) {
-        backGroundImage = 'url(/Images/5.jfif)'
+        backGroundImage = 'url(images/5.jfif)'
     }
     else if (temperature < 30) {
-        backGroundImage = 'url(/Images/6.jfif)'
+        backGroundImage = 'url(images/6.jfif)'
     }
     else if (temperature < 35) {
-        backGroundImage = 'url(/Images/7.jfif)'
+        backGroundImage = 'url(images/7.jfif)'
     }
     else if (temperature > 35) {
-        backGroundImage = 'url(/Images/8.jfif)'
+        backGroundImage = 'url(images/8.jfif)'
     }
 
     document.body.style.backgroundImage = backGroundImage

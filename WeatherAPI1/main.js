@@ -33,14 +33,14 @@ let weather = {
         const { speed } = data.wind
         // console.log(name, icon, description, temp, humidity, speed)
 
-        document.querySelector('.city').innerText = `Weather in ${name}`
-        document.querySelector('.icon').src = `https://openweathermap.org/img/wn/${icon}.png`
-        document.querySelector('.description').innerText = `${description}`
-        document.querySelector('.temp').innerText = `${temp}°C`
-        document.querySelector('.humidity').innerText = `Humidity: ${humidity}%`
-        document.querySelector('.wind').innerText = `Wind speed: ${speed} km/h`
+        document.querySelector('.weather__city').innerText = `Weather in ${name}`
+        document.querySelector('.weather__icon').src = `https://openweathermap.org/img/wn/${icon}.png`
+        document.querySelector('.weather__description').innerText = `${description}`
+        document.querySelector('.weather__temp').innerText = `${temp}°C`
+        document.querySelector('.weather__humidity').innerText = `Humidity: ${humidity}%`
+        document.querySelector('.weather__wind').innerText = `Wind speed: ${speed} km/h`
+        
         document.querySelector('.weather').classList.remove('loading')
-
         document.querySelector('.loading_message').classList.remove('no_location')
         document.querySelector('.invalid_message').classList.remove('no_location')
         document.querySelector('.blurred').classList.remove('active')
@@ -166,10 +166,10 @@ let geocode = {
         }else{
             weather.fetchWeather('Philippines')
         }
-        
         function success (data){
             geocode.reverseGeocode(data.coords.latitude, data.coords.longitude)
         }
+        
     }
 }
 

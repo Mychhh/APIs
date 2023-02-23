@@ -7,7 +7,9 @@ let weather = {
                 return response.json()
             })
             .then(data => {
+                // console.log(data)
                 weather.displayWeather(data)
+                fiveDaysForecast.getFiveDaysForecast(Math.round(data.coord.lat), Math.round(data.coord.lon))
             })
             .catch(error => {
                 document.querySelector('.loading_message').classList.remove('no_location')
@@ -39,7 +41,7 @@ let weather = {
         document.querySelector('.weather__temp').innerText = `${temp}°C`
         document.querySelector('.weather__humidity').innerText = `Humidity: ${humidity}%`
         document.querySelector('.weather__wind').innerText = `Wind speed: ${speed} km/h`
-        
+
         document.querySelector('.weather').classList.remove('loading')
         document.querySelector('.loading_message').classList.remove('no_location')
         document.querySelector('.invalid_message').classList.remove('no_location')
@@ -60,12 +62,13 @@ let weather = {
 
     }
 }
-
+// Onclick to search button
 document.querySelector('.search button').addEventListener('click', function () {
     document.querySelector('.blurred').classList.add('active')
     weather.search()
 })
 
+// OnKeypress to Enter
 document.querySelector('.search-bar').addEventListener('keypress', function (event) {
     if (event.key === "Enter") {
         document.querySelector('.blurred').classList.add('active')
@@ -159,18 +162,66 @@ let geocode = {
 
         request.send();  // make the request
     },
-    getLocation : function () {
+    getLocation: function () {
         // gets the data from success return value in getCurrentPosition
-        if(navigator.geolocation){
+        if (navigator.geolocation === true) {
             navigator.geolocation.getCurrentPosition(success, console.error)
-        }else{
+        } else {
             weather.fetchWeather('Philippines')
         }
-        function success (data){
+        function success(data) {
             geocode.reverseGeocode(data.coords.latitude, data.coords.longitude)
+            // fiveDaysForecast.getFiveDaysForecast(data.coords.latitude, data.coords.longitude)
         }
-        
+
     }
 }
 
+//5 days forecast
+let fiveDaysForecast = {
+    fiveDaysDate: [],
+    getFiveDaysForecast: (latitude, longitude) => {
+        let api_key = '8fbae8d3911a9dac6f7c9b5653f4833d'
+        // let latitude = 35
+        // let longtitude = 139
+        let htmlElement = ''
+
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=8fbae8d3911a9dac6f7c9b5653f4833d`)
+            .then((response) => {
+                return response.json()
+            })
+            .then((json) => {
+                console.log(json.list)
+                // loop through json data from five days forecast
+                json.list.forEach(function (jsonData) {
+                    // adds each date on array
+                    if (fiveDaysForecast.fiveDaysDate.includes(jsonData.dt_txt.split(' ')[0])) {
+                    } else {
+                        fiveDaysForecast.fiveDaysDate.push(jsonData.dt_txt.split(' ')[0])
+                        htmlElement +=
+                            `
+                            <div class="weather_forecast">
+                                <h1 class="weather__temp">${jsonData.main.temp}°C</h1>
+                                <div class="weather__description_icon">
+                                    <img src="https://openweathermap.org/img/wn/${jsonData.weather[0].icon}.png" alt="" class="weather__icon">
+                                    <div class="weather__description">${jsonData.weather[0].description}</div>
+                                </div>
+                                <p style='margin-top: 0.5rem'>${jsonData.dt_txt.split(' ')[0]}</p>
+                            </div>
+                            `
+                    }
+                })
+
+                document.getElementById('test').innerHTML = htmlElement
+                // Reset the values after getting the data from api
+                htmlElement = ''
+                fiveDaysForecast.fiveDaysDate.length = 0;
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }
+}
+
+// fiveDaysForecast.getFiveDaysForecast(14, 120)
 geocode.getLocation()

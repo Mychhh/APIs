@@ -76,35 +76,24 @@ document.querySelector('.search-bar').addEventListener('keypress', function (eve
     }
 })
 
+// Background
 const weatherBackground = (temperature) => {
     let backGroundImage = ''
 
-    if (temperature < 0) {
-        backGroundImage = 'url(images/0.jfif)'
-    }
-    else if (temperature < 5) {
-        backGroundImage = 'url(images/1.jfif)'
-    }
-    else if (temperature < 10) {
-        backGroundImage = 'url(images/2.jfif)'
-    }
-    else if (temperature < 15) {
-        backGroundImage = 'url(images/3.jfif)'
+    if (temperature < 10) {
+        backGroundImage = 'url(images/10degrees.webp)'
     }
     else if (temperature < 20) {
-        backGroundImage = 'url(images/4.jfif)'
+        backGroundImage = 'url(images/20degrees.webp)'
     }
     else if (temperature < 25) {
-        backGroundImage = 'url(images/5.jfif)'
+        backGroundImage = 'url(images/25degrees.jfif)'
     }
     else if (temperature < 30) {
-        backGroundImage = 'url(images/6.jfif)'
+        backGroundImage = 'url(images/30degrees.jfif)'
     }
-    else if (temperature < 35) {
-        backGroundImage = 'url(images/7.jfif)'
-    }
-    else if (temperature > 35) {
-        backGroundImage = 'url(images/8.jfif)'
+    else if (temperature > 30) {
+        backGroundImage = 'url(images/35degrees.webp)'
     }
 
     document.body.style.backgroundImage = backGroundImage

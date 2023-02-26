@@ -169,6 +169,10 @@ let geocode = {
 //5 days forecast
 let fiveDaysForecast = {
     fiveDaysDate: [],
+    fiveDaysDateMinTemp: [],
+    fiveDaysDateMaxTemp: [],
+    fiveDaysDateWeatherIcon: [],
+    fiveDaysDateWeatherDescription: [],
     getFiveDaysForecast: (latitude, longitude) => {
         let api_key = '8fbae8d3911a9dac6f7c9b5653f4833d'
         // let latitude = 35
@@ -185,21 +189,51 @@ let fiveDaysForecast = {
                 json.list.forEach(function (jsonData) {
                     // adds each date on array
                     if (fiveDaysForecast.fiveDaysDate.includes(jsonData.dt_txt.split(' ')[0])) {
+                        // change the value of min and max temperature depending on its value
+                        if (fiveDaysForecast.fiveDaysDateMinTemp[fiveDaysForecast.fiveDaysDateMinTemp.length - 1] > jsonData.main.temp_min) {
+                            fiveDaysForecast.fiveDaysDateMinTemp[fiveDaysForecast.fiveDaysDateMinTemp.length - 1] = jsonData.main.temp_min
+                        }
+                        if (fiveDaysForecast.fiveDaysDateMaxTemp[fiveDaysForecast.fiveDaysDateMaxTemp.length - 1] < jsonData.main.temp_max) {
+                            fiveDaysForecast.fiveDaysDateMaxTemp[fiveDaysForecast.fiveDaysDateMaxTemp.length - 1] = jsonData.main.temp_max
+                        }
                     } else {
+                        // adds min and max temperature
+                        fiveDaysForecast.fiveDaysDateMinTemp.push(jsonData.main.temp_min)
+                        fiveDaysForecast.fiveDaysDateMaxTemp.push(jsonData.main.temp_max)
+
                         fiveDaysForecast.fiveDaysDate.push(jsonData.dt_txt.split(' ')[0])
-                        htmlElement +=
-                            `
-                            <div class="weather_forecast">
-                                <h1 class="weather__temp">${jsonData.main.temp}°C</h1>
-                                <div class="weather__description_icon">
-                                    <img src="https://openweathermap.org/img/wn/${jsonData.weather[0].icon}.png" alt="" class="weather__icon">
-                                    <div class="weather__description">${jsonData.weather[0].description}</div>
-                                </div>
-                                <p style='margin-top: 0.5rem'>${jsonData.dt_txt.split(' ')[0]}</p>
-                            </div>
-                            `
+                        fiveDaysForecast.fiveDaysDateWeatherIcon.push(jsonData.weather[0].icon)
+                        fiveDaysForecast.fiveDaysDateWeatherDescription.push(jsonData.weather[0].description)
+                        // htmlElement +=
+                        //     `
+                        //     <div class="weather_forecast">
+                        //         <h3 class="weather__temp">min: ${jsonData.main.temp_min}°C</h3>
+                        //         <h3 class="weather__temp">max: ${jsonData.main.temp_max}°C</h3>
+                        //         <div class="weather__description_icon">
+                        //             <img src="https://openweathermap.org/img/wn/${jsonData.weather[0].icon}.png" alt="" class="weather__icon">
+                        //             <div class="weather__description">${jsonData.weather[0].description}</div>
+                        //         </div>
+                        //         <p style='margin-top: 0.5rem'>${jsonData.dt_txt.split(' ')[0]}</p>
+                        //     </div>
+                        //     `
                     }
+
                 })
+                // adds the html element
+                for (let i = 0; i < fiveDaysForecast.fiveDaysDate.length - 1; i++) {
+                    htmlElement +=
+                    `
+                    <div class="weather_forecast">
+                        <h3 class="weather__temp">min: ${fiveDaysForecast.fiveDaysDateMinTemp[i]}°C</h3>
+                        <h3 class="weather__temp">max: ${fiveDaysForecast.fiveDaysDateMaxTemp[i]}°C</h3>
+                        <div class="weather__description_icon">
+                            <img src="https://openweathermap.org/img/wn/${fiveDaysForecast.fiveDaysDateWeatherIcon[i]}.png" alt="" class="weather__icon">
+                            <div class="weather__description">${fiveDaysForecast.fiveDaysDateWeatherDescription[i]}</div>
+                        </div>
+                        <p style='margin-top: 0.5rem'>${fiveDaysForecast.fiveDaysDate[i]}</p>
+                    </div>
+                    `
+                }
 
                 document.getElementById('test').innerHTML = htmlElement
                 // Reset the values after getting the data from api
